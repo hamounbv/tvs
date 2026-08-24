@@ -1,0 +1,494 @@
+/* ================================================
+   TVS Animal Hospital — Global Styles
+   Single source of truth for site custom CSS.
+   Served via jsDelivr (request tvs.min.css for the minified build).
+
+   Sections:
+   01. Token Hub
+   02. Color System: OKLCH and Display-P3 fallback
+   03. Reset & Box Model
+   04. Typography Utilities
+   05. Utility Attributes
+   06. Interactive Link Effects
+   07. Animations
+   08. Components & Patterns
+   09. Flatpickr Theme
+   ================================================ */
+
+/* ------------------------------------------------
+   01. Token Hub
+------------------------------------------------ */
+:root {
+  /* Scaling System */
+  --size-unit: 16; /* Body font-size in design units (no px) */
+  --size-container-ideal: 1680;
+  --size-container-min: 1280px;
+  --size-container-max: 1680px;
+
+  --size-container: clamp(
+    var(--size-container-min),
+    100vw,
+    var(--size-container-max)
+  );
+
+  --size-font: calc(
+    var(--size-container) / (var(--size-container-ideal) / var(--size-unit))
+  );
+
+  font-size: var(--size-font);
+
+  /* Color aliases (still uses the existing --_colors---* vars) */
+  --color-accent: var(--_colors---accent, #5498dc);
+  --color-bg-dark: var(--_colors---bg--dark, #0b0e14);
+  --color-text-light: var(--_colors---text-color--light, #f2f5ff);
+
+  /* Existing tokens (kept as-is) */
+  --base---box-opacity: 50%;
+  --shadow-blur: 3em;
+  --address-icon-fill: var(--color-accent);
+
+  /* Motion + timing */
+  --ease-bbs: cubic-bezier(0.64, 0.05, 0, 1);
+  --dur-bbs: 735ms;
+
+  /* Underline effect */
+  --underline-top: 100%;
+  --underline-height: 1px;
+  --inline-underline-opacity: 0.48;
+
+  /* Loops */
+  --loop-x-duration: 60s;
+  --loop-y-duration: 32s;
+
+  /* SVG dash */
+  --svg-dash-duration: 8s;
+  --svg-dash-offset: 600;
+
+  /* Zoom */
+  --image-zoom-scale: 1.12;
+
+  /* Flatpickr theme (section 09) */
+  --datepicker-surface: #ffffff;
+  --datepicker-ink: #080829;
+  --datepicker-accent: #1c1ce6;
+  --datepicker-hover: #f2f2ff;
+}
+
+@media screen and (min-width: 1920px) {
+  :root {
+    --size-unit: 16; /* Body font-size in design units (no px) */
+  }
+}
+
+/* Tablet */
+@media screen and (max-width: 991px) {
+  :root {
+    --size-container-ideal: 834;
+    --size-container-min: 768px;
+    --size-container-max: 991px;
+  }
+}
+
+/* Mobile Landscape */
+@media screen and (max-width: 767px) {
+  :root {
+    --size-container-ideal: 430;
+    --size-container-min: 480px;
+    --size-container-max: 767px;
+  }
+}
+
+/* Mobile Portrait */
+@media screen and (max-width: 479px) {
+  :root {
+    --size-container-ideal: 430;
+    --size-container-min: 320px;
+    --size-container-max: 428px;
+  }
+}
+
+/* ------------------------------------------------
+   02. Color System: OKLCH and Display-P3 Fallback
+   Both blocks are intentionally empty — they are the hooks for
+   wide-gamut tokens when the palette is ready for them.
+------------------------------------------------ */
+@supports (color: oklch(50% 0.2 280)) {
+  :root {
+    /* Add OKLCH tokens here if needed */
+  }
+}
+
+@supports (color: color(display-p3 1 0 0)) {
+  :root {
+    /* Add Display-P3 tokens here if needed */
+  }
+}
+
+/* ------------------------------------------------
+   03. Reset & Box Model
+------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+  text-size-adjust: 100%;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 8%;
+  text-underline-offset: -8%;
+  text-underline-position: from-font;
+}
+
+html {
+  scroll-behavior: initial;
+  scrollbar-width: none; /* Firefox */
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  width: 100vw;
+
+  /* IMPORTANT: one declaration only (a second line would override the first) */
+  font-feature-settings: "liga" 1, "calt" 1;
+
+  -ms-overflow-style: none; /* IE & Edge */
+}
+
+/* Hide scrollbars universally */
+body::-webkit-scrollbar,
+body ::-webkit-scrollbar {
+  display: none;
+}
+
+svg {
+  max-width: none;
+  height: auto;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+a {
+  color: inherit;
+}
+
+/* ------------------------------------------------
+   04. Typography Utilities
+------------------------------------------------ */
+/* Same behavior, lower specificity so Webflow overrides stay easy */
+.rte :where(:first-child, div:first-child > :first-child),
+.content-rte :where(:first-child, div:first-child > :first-child),
+.case-study :where(:first-child, div:first-child > :first-child) {
+  margin-top: 0 !important;
+}
+
+.rte :where(:last-child, div:first-child > :last-child),
+.content-rte :where(:last-child, div:first-child > :last-child),
+.case-study :where(:last-child, div:first-child > :last-child) {
+  margin-bottom: 0 !important;
+}
+
+.w-richtext::after,
+.w-richtext::before {
+  display: none;
+}
+
+/* ------------------------------------------------
+   05. Utility Attributes
+------------------------------------------------ */
+[scroll-show="false"] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+[scroll-show="false"]::-webkit-scrollbar {
+  display: none;
+}
+
+/* Truncate Text Utility (single core rule + variable override) */
+[data-truncate] {
+  --truncate-lines: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: var(--truncate-lines);
+}
+
+[data-truncate="1"] {
+  --truncate-lines: 1;
+}
+
+[data-truncate="2"] {
+  --truncate-lines: 2;
+}
+
+/* Selection Highlight */
+@supports (background-color: color-mix(in srgb, black 10%, transparent)) {
+  ::selection {
+    background-color: color-mix(in srgb, currentColor 12%, transparent);
+    color: var(--color-accent);
+    text-shadow: none;
+  }
+  ::-moz-selection {
+    background-color: color-mix(in srgb, currentColor 12%, transparent);
+    color: var(--color-accent);
+    text-shadow: none;
+  }
+}
+
+[data-theme="dark"] {
+  background-color: var(--_colors---bg--dark);
+  color: var(--_colors---text--light);
+}
+
+[data-theme="dark-transparent"] {
+  color: var(--_colors---text--light) !important;
+  background-color: transparent;
+}
+
+[data-gradient] {
+  background: linear-gradient(
+    90deg,
+    #db4ed7 0%,
+    #b370dc 46.32%,
+    #61b4e7 82.69%
+  );
+}
+
+[data-gradient-text] {
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-repeat: repeat-x;
+  -webkit-text-fill-color: transparent;
+  color: inherit;
+}
+
+/* ------------------------------------------------
+   06. Interactive Link Effects
+------------------------------------------------ */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  top: var(--underline-top);
+  left: 0%;
+  height: var(--underline-height);
+  width: 0%;
+  background: currentColor;
+  transition: width var(--dur-bbs) var(--ease-bbs);
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+.link-underline:not(:hover)::after {
+  left: auto;
+  right: 0%;
+  width: 0%;
+}
+
+.inline-link-underline {
+  position: relative;
+  --underline-top: 110%;
+  --inline-underline-opacity: 0.24;
+}
+
+.inline-link-underline::after {
+  content: "";
+  position: absolute;
+  top: var(--underline-top);
+  left: 0%;
+  height: var(--underline-height);
+  width: 100%;
+  background: currentColor;
+  opacity: var(--inline-underline-opacity);
+  transition: opacity var(--dur-bbs) var(--ease-bbs);
+}
+
+.inline-link-underline:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------------------------------
+   07. Animations
+------------------------------------------------ */
+@keyframes loopX {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes loopY {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.loop-animate-x {
+  animation: loopX var(--loop-x-duration) linear infinite;
+  will-change: transform;
+}
+
+.loop-animate-y {
+  animation: loopY var(--loop-y-duration) linear infinite;
+  will-change: transform;
+}
+
+.loop-animate-x.reverse {
+  animation: loopX var(--loop-x-duration) linear infinite reverse;
+  will-change: transform;
+}
+
+.loop-animate-y.reverse {
+  animation: loopY var(--loop-y-duration) linear infinite reverse;
+  will-change: transform;
+}
+
+.svg-animate-line {
+  stroke-dasharray: 10 10 !important;
+  animation: svgDash var(--svg-dash-duration) linear infinite;
+}
+
+.svg-animate-line.reverse {
+  animation: svgDash var(--svg-dash-duration) linear infinite reverse;
+}
+
+@keyframes svgDash {
+  to {
+    stroke-dashoffset: var(--svg-dash-offset);
+  }
+}
+
+/* Motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .loop-animate-x,
+  .loop-animate-y,
+  .svg-animate-line {
+    animation: none !important;
+  }
+
+  .image-w img,
+  .link-underline::after,
+  .inline-link-underline::after {
+    transition-duration: 1ms !important;
+  }
+}
+
+/* ------------------------------------------------
+   08. Components & Patterns
+------------------------------------------------ */
+.s-wrapper::before,
+.s-wrapper::after {
+  display: none;
+}
+
+.landing-form-select-checkbox.w--redirected-checked
+  ~ .landing-form-select-label {
+  color: var(--_colors---fg--light);
+}
+
+/* Global component: let clicks through the wrapper, but not through its
+   children — keeps a full-bleed overlay from blocking the page. */
+.global-component {
+  pointer-events: none;
+}
+
+.global-component > * {
+  pointer-events: auto;
+}
+
+.button:hover .button-circle {
+  transform: rotate(45deg);
+}
+
+/* Gallery items cycle through four accent borders. Ordering matters:
+   nth-child(n) matches everything and must come first so the 2n/3n/4n
+   rules below can override it. */
+.global-gallery-item:nth-child(n) {
+  border: 2px solid #ffa0ea;
+}
+
+.global-gallery-item:nth-child(2n) {
+  border: 2px solid #acecbb;
+}
+
+.global-gallery-item:nth-child(3n) {
+  border: 2px solid #7ec2ff;
+}
+
+.global-gallery-item:nth-child(4n) {
+  border: 2px solid #ffdd21;
+}
+
+/* ------------------------------------------------
+   09. Flatpickr Theme
+   Overrides flatpickr's default dark palette to match the brand.
+   The !important flags are required — flatpickr ships its own
+   stylesheet from jsDelivr and it loads after this file.
+------------------------------------------------ */
+
+/* The whole popup: background, border, shadow */
+.flatpickr-calendar {
+  background: var(--datepicker-surface) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(8, 8, 41, 0.12) !important;
+  border: none !important;
+}
+
+/* Header strip (month + year) — match the white bg */
+.flatpickr-months,
+.flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  background: var(--datepicker-surface) !important;
+  color: var(--datepicker-ink) !important;
+  fill: var(--datepicker-ink) !important;
+}
+
+/* Day-of-week labels (Sun, Mon…) */
+.flatpickr-weekday {
+  color: var(--datepicker-ink) !important;
+}
+
+/* Normal day cells */
+.flatpickr-day {
+  color: var(--datepicker-ink) !important;
+  border-radius: 8px !important;
+}
+
+/* Hover + selected day — brand blue */
+.flatpickr-day:hover {
+  background: var(--datepicker-hover) !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: var(--datepicker-accent) !important;
+  border-color: var(--datepicker-accent) !important;
+  color: var(--datepicker-surface) !important;
+}
+
+/* Today */
+.flatpickr-day.today {
+  border-color: var(--datepicker-accent) !important;
+}
+
+/* Time selector row at the bottom */
+.flatpickr-time,
+.flatpickr-time input,
+.flatpickr-time .flatpickr-am-pm {
+  background: var(--datepicker-surface) !important;
+  color: var(--datepicker-ink) !important;
+}

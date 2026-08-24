@@ -1,0 +1,27 @@
+<!-- ============================================================
+     TVS Animal Hospital — Site Settings → Custom Code → FOOTER
+     Version-controlled source of truth for the before-</body> block.
+
+     Changes vs the previous footer:
+     - flatpickr pinned to 4.6.13 (was unversioned) and now loads with defer
+     - Lenis now loads with defer (version 1.3.23 unchanged)
+     - five inline scripts moved INTO js/tvs.js: the flatpickr init, the
+       Lenis init, the gcl_aw ad-click capture, the dynamic video loop,
+       and the whole SmartSwiper file that used to load from the sandbox
+     - the CodeSandbox script tag is gone
+     Deferred scripts execute in document order, so flatpickr and Lenis are
+     both ready before tvs.js initialises them. jQuery, the Webflow runtime
+     and GSAP/ScrollTrigger are emitted by Webflow earlier and are not
+     deferred, so they are ready first. Swiper is not listed here on
+     purpose — SmartSwiper loads it on demand, only on pages with a slider.
+     Remember to bump @1.0.0 when you tag a new release.
+     ============================================================ -->
+
+<!-- Flatpickr (pinned) -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js" defer></script>
+
+<!-- Lenis Smooth Scrolling -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js" defer></script>
+
+<!-- Site JS (GitHub → jsDelivr, pinned release) -->
+<script src="https://cdn.jsdelivr.net/gh/hamounbv/tvs@1.0.0/js/tvs.min.js" defer></script>

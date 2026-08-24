@@ -1,0 +1,79 @@
+<!-- ============================================================
+     TVS Animal Hospital — Site Settings → Custom Code → HEAD
+     Version-controlled source of truth for the head block. Paste its
+     contents into Webflow Site Settings, replacing what is there now.
+
+     Changes vs the previous head:
+     - duplicate viewport meta (maximum-scale=1) removed — it disabled
+       pinch-zoom (accessibility fail, flagged by Lighthouse). Webflow
+       already emits a correct viewport tag. Keep form inputs at >=16px
+       to stop iOS zooming on focus.
+     - flatpickr CSS pinned to 4.6.13. The old URL had no version at all,
+       so the site silently tracked whatever npm's latest was — verified
+       today it resolves to 4.6.13, so this pin freezes current behaviour.
+     - site CSS added from the pinned jsDelivr build.
+       NOTE: this stylesheet is linked TWICE on purpose — here, and again
+       in webflow/_embed.html. The head copy is what production needs; the
+       embed copy is what makes the styles visible on the Designer canvas,
+       which does not execute head custom code. Same URL both times, so the
+       browser fetches it once. Do not "fix" this by deleting one.
+     Remember to bump @1.0.0 when you tag a new release.
+     ============================================================ -->
+
+<!-- Google Tag Manager -->
+<script>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-W4QNPPMP');
+</script>
+<!-- End Google Tag Manager -->
+
+<!-- Global | Webflow Head Custom Code | Start -->
+
+<!-- Theme Color Browser -->
+<meta name="theme-color" content="#FBF8EA" />
+
+<!-- Preconnecting API -->
+<link rel="preconnect" href="https://cdn.prod.website-files.com" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+
+<!-- Flatpickr (pinned) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" />
+
+<!-- Site CSS (GitHub → jsDelivr, pinned release) — also linked in the global embed, deliberately -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hamounbv/tvs@1.0.0/css/tvs.min.css" />
+
+<style>
+  /* Hiding Dev Supports */
+  .g-embed-code,
+  /* .g-grid-guide, */
+  .w-webflow-badge {
+    z-index: -99999 !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  /* --------- Lenis Smooth Scrolling --------- */
+  html.lenis {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+</style>
+
+<!-- Global | Webflow Head Custom Code | End -->

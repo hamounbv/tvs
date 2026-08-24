@@ -1,0 +1,31 @@
+<!-- ============================================================
+     TVS Animal Hospital — the `G | Embed Code` global component
+     Version-controlled source of truth for the global embed element.
+
+     This is a third injection point beyond the brandvm two-file layout,
+     and it exists for a specific reason: the Webflow Designer canvas does
+     not execute head custom code, but it DOES render embed elements. So
+     the stylesheet link below is what lets you see the site styles while
+     designing.
+
+     That means tvs.min.css is linked twice on published pages — once in
+     the head, once here. This is deliberate. It is the same URL both
+     times, so the browser makes one request and serves the second from
+     cache; the only cost is one extra <link> element in the body.
+
+     Changes vs the previous embed:
+     - the sandbox stylesheet URL is replaced by the pinned jsDelivr build
+     - the "staging only" <style> block is gone: those rules now live in
+       css/tvs.css (global-component pointer-events, button-circle hover,
+       gallery item borders) and section 09 (the flatpickr theme)
+     Bump @1.0.0 here too when you tag a new release — this is the file
+     people forget.
+     ============================================================ -->
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W4QNPPMP"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- Site CSS — deliberately duplicated from the head so styles render on the Designer canvas -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/hamounbv/tvs@1.0.0/css/tvs.min.css" />
